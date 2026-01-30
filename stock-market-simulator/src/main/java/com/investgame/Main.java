@@ -24,12 +24,10 @@ public class Main {
     System.out.println("Please input your API key from FMP: ");
     apiKey = scan.nextLine();
 
-    //create an instance of getQuote
-    StockFinder getQuote = new StockFinder();
-
-    //method to get the quote for a stock
-    getQuote.getQuote(ticker);
+    //create an instance of StockFinder
+    StockFinder stockFinder = new StockFinder();
     
-
+    //call the stockInfo method
+    stockFinder.stockInfo(ticker);
    }
 }

@@ -24,7 +24,7 @@ public class StockDetails {
     public String getSymbol(){
         return symbol;
     }
-
+    
     public String getName(){
         return name;
     }
