@@ -5,21 +5,21 @@ package com.investgame;
 public class StockDetails {
     private String symbol;
     private String name;
-    private Number price;
-    private Number changePercentage;
-    private Number change;
-    private Number volume;
-    private Number dayLow;
-    private Number dayHigh;
-    private Number yearHigh;
-    private Number yearLow;
-    private Number marketCap;
-    private Number priceAvg50;
-    private Number priceAvg200;
+    private double price;
+    private double changePercentage;
+    private double change;
+    private double volume;
+    private double dayLow;
+    private double dayHigh;
+    private double yearHigh;
+    private double yearLow;
+    private double marketCap;
+    private double priceAvg50;
+    private double priceAvg200;
     private String exchange;
-    private Number open;
-    private Number previousClose;
-    private Number timestamp;
+    private double open;
+    private double previousClose;
+    private double timestamp;
 
     public String getSymbol(){
         return symbol;
@@ -29,47 +29,47 @@ public class StockDetails {
         return name;
     }
 
-    public Number getPrice(){
+    public double getPrice(){
         return price;
     }
     
-    public Number getChangePercentage(){
+    public double getChangePercentage(){
         return changePercentage;
     }
 
-    public Number getChange(){
+    public double getChange(){
         return change;
     }
 
-    public Number getVolume(){
+    public double getVolume(){
         return volume;
     }
 
-    public Number getDayLow(){
+    public double getDayLow(){
         return dayLow;
     }
 
-    public Number getDayHigh(){
+    public double getDayHigh(){
         return dayHigh;
     }
 
-    public Number getYearHigh(){
+    public double getYearHigh(){
         return yearHigh;
     }
 
-    public Number getYearLow(){
+    public double getYearLow(){
         return yearLow;
     }
 
-    public Number getMarketCap(){
+    public double getMarketCap(){
         return marketCap;
     }
 
-    public Number getPriceAvg50(){
+    public double getPriceAvg50(){
         return priceAvg50;
     }
 
-    public Number getPriceAvg200(){
+    public double getPriceAvg200(){
         return priceAvg200;
     }
 
@@ -77,15 +77,15 @@ public class StockDetails {
         return exchange;
     }
 
-    public Number getOpen(){
+    public double getOpen(){
         return open;
     }
 
-    public Number getPreviousClose(){
+    public double getPreviousClose(){
         return previousClose;
     }
 
-    public Number getTimestamp(){
+    public double getTimestamp(){
         return timestamp;
     }
 }

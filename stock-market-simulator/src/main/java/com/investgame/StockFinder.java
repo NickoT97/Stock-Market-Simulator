@@ -20,7 +20,9 @@ public class StockFinder {
     private StockDetails stock;
     String url;
 
-    //user asks for stock info on a particular company
+
+
+    //GENERATE STOCK INFO (price, name, etc.)
     public void stockInfo(String ticker) throws Exception {
 
         StockDetails[] stockDetails = getQuote(ticker);
@@ -85,6 +87,7 @@ public class StockFinder {
                 if (userInput.equals("YES")) {
                     break; //break inner loop, continue outer loop
                 } else if (userInput.equals("NO")) {
+                    buyStock(stockDetails); //buy the stock
                     return; //exit the entire method
                 } else {
                     System.out.println("Invalid input. Type either YES or NO.");
@@ -94,7 +97,9 @@ public class StockFinder {
 
     }
 
-    //get information for a stock
+
+
+    //OBTAIN INFORMATION FROM FMP
     public StockDetails[] getQuote(String ticker) throws Exception {
 
         //makes the input all caps
@@ -122,14 +127,58 @@ public class StockFinder {
         return stockDetails;
     }
 
-    //add stock to portfolio
-    public void buyStock(StockDetails stock){
 
+
+    //PURCHASE A STOCK
+    public void buyStock(StockDetails[] stock){
+        
+
+        //FIX THIS - USE INSTANCE OF PORTFOLIO IN MAIN (pass on objects)
+        Portfolio portfolio = new Portfolio();
+
+        while (true) {
+            System.out.println("\nWould you like to buy " + ticker + "? (YES/NO)");
+            String userInput = scan.nextLine().toUpperCase();
+
+            if (userInput.equals("YES")) { //wants to buys stock
+
+                System.out.println("\nCurrent share price of " + ticker + ": " + stock[0].getPrice()); //current share price
+                System.out.println("Current cash balance: " + portfolio.getBalance()); //current cash balance
+                System.out.println("How many shares would you like to purchase?"); 
+                int shares = scan.nextInt(); //number of shares the user wants
+                double sharePrice = stock[0].getPrice();
+                double totalOrder = shares * sharePrice; //total value of purchase 
+
+                if (totalOrder > portfolio.getBalance()) { //user is not able to buy stock
+                    System.out.println("Insufficient funds. Returning to main menu.");
+                    return;
+                }
+
+                else if (totalOrder <= portfolio.getBalance()) { //user is able to buy stock
+                    System.out.println("Sufficient funds available. Generating order for " + ticker);
+                    Portfolio.Holdings.add(stock); //add stock to portfolio
+                    System.out.println(ticker + " has been purchased.");
+
+                    //decrease cash balance
+                    portfolio.decreaseCash(totalOrder); //decreases cash in portfolio and restates new cash balance
+                    return;
+                }
+
+                break; //break inner loop, continue outer loop
+            } else if (userInput.equals("NO")) {
+                System.out.println(ticker + " will not be purchased.");
+                return; //exit the entire method
+            } else {
+                System.out.println("Invalid input. Type either YES or NO.");
+            }
+        }
+        
+        
 
     }
 
-    //sell stock from portfolio
-    public void sellStock(StockDetails stock){
+    //SELL A STOCK FROM PORTFOLIO
+    public void sellStock(StockDetails[] stock){
 
 
     }

@@ -8,26 +8,38 @@ public class Main {
     public static String apiKey;
 
     public static void main(String[] args) throws Exception {
-    Scanner scan = new Scanner(System.in);
+        Scanner scan = new Scanner(System.in);
 
-    //INTRODUCTION
-    System.out.println("Please enter your name: ");
-    final String name = scan.nextLine();
+        //INTRODUCTION
+        System.out.println("Please enter your name: ");
+        final String name = scan.nextLine();
 
-    System.out.println("Hello " + name + "! Welcome to the Stock Market Simulator.");
-    System.out.println("Please input a stock: ");
 
-    
-    String ticker = scan.nextLine().toUpperCase();
-    
-    
-    System.out.println("Please input your API key from FMP: ");
-    apiKey = scan.nextLine();
+        //enter API key
+        System.out.println("\nPlease input your API key from FMP: ");
+        apiKey = scan.nextLine();
 
-    //create an instance of StockFinder
-    StockFinder stockFinder = new StockFinder();
-    
-    //call the stockInfo method
-    stockFinder.stockInfo(ticker);
+
+        //create an instance of Portfolio
+        Portfolio portfolio = new Portfolio();
+
+        System.out.println("\nPlease enter starting cash balance: ");
+        double num = scan.nextDouble();
+        scan.nextLine();
+        portfolio.introCash(num); //add cash
+
+        System.out.println("\nHello " + name + "! Welcome to the Stock Market Simulator.");
+        
+
+        //stock input
+        System.out.println("Please input a stock: ");
+
+        String ticker = scan.nextLine().toUpperCase();
+        
+        //create an instance of StockFinder
+        StockFinder stockFinder = new StockFinder();
+        
+        //call the stockInfo method
+        stockFinder.stockInfo(ticker);
    }
 }
