@@ -25,7 +25,7 @@ public class StockFinder {
     //GENERATE STOCK INFO (price, name, etc.)
     public void stockInfo(String ticker, Portfolio portfolio) throws Exception {
 
-        StockDetails[] stockDetails = getQuote(ticker);
+        StockDetails stockDetails = getQuote(ticker);
 
         //getting information on the stock
         for ( ; ; ){
@@ -38,39 +38,39 @@ public class StockFinder {
             int num = scan.nextInt();
             
             switch (num) {
-                case 1: System.out.println(stockDetails[0].getSymbol());
+                case 1: System.out.println(stockDetails.getSymbol());
                     break;
-                case 2: System.out.println(stockDetails[0].getName());
+                case 2: System.out.println(stockDetails.getName());
                     break;
-                case 3: System.out.println(stockDetails[0].getPrice());
+                case 3: System.out.println(stockDetails.getPrice());
                     break;
-                case 4: System.out.println(stockDetails[0].getChangePercentage());
+                case 4: System.out.println(stockDetails.getChangePercentage());
                     break;
-                case 5: System.out.println(stockDetails[0].getChange());
+                case 5: System.out.println(stockDetails.getChange());
                     break;
-                case 6: System.out.println(stockDetails[0].getVolume());
+                case 6: System.out.println(stockDetails.getVolume());
                     break;
-                case 7: System.out.println(stockDetails[0].getDayLow());
+                case 7: System.out.println(stockDetails.getDayLow());
                     break;
-                case 8: System.out.println(stockDetails[0].getDayHigh());
+                case 8: System.out.println(stockDetails.getDayHigh());
                     break;
-                case 9: System.out.println(stockDetails[0].getYearHigh());
+                case 9: System.out.println(stockDetails.getYearHigh());
                     break;
-                case 10: System.out.println(stockDetails[0].getYearLow());
+                case 10: System.out.println(stockDetails.getYearLow());
                     break;
-                case 11: System.out.println(stockDetails[0].getMarketCap());
+                case 11: System.out.println(stockDetails.getMarketCap());
                     break;
-                case 12: System.out.println(stockDetails[0].getPriceAvg50());
+                case 12: System.out.println(stockDetails.getPriceAvg50());
                     break;
-                case 13: System.out.println(stockDetails[0].getPriceAvg200());
+                case 13: System.out.println(stockDetails.getPriceAvg200());
                     break;
-                case 14: System.out.println(stockDetails[0].getExchange());
+                case 14: System.out.println(stockDetails.getExchange());
                     break;
-                case 15: System.out.println(stockDetails[0].getOpen());
+                case 15: System.out.println(stockDetails.getOpen());
                     break;
-                case 16: System.out.println(stockDetails[0].getPreviousClose());
+                case 16: System.out.println(stockDetails.getPreviousClose());
                     break;
-                case 17: System.out.println(stockDetails[0].getTimestamp());
+                case 17: System.out.println(stockDetails.getTimestamp());
                     break;
                 default: System.out.println("Invalid. Enter again: ");
                     num = scan.nextInt();
@@ -100,7 +100,7 @@ public class StockFinder {
 
 
     //OBTAIN INFORMATION FROM FMP
-    public StockDetails[] getQuote(String ticker) throws Exception {
+    public StockDetails getQuote(String ticker) throws Exception {
 
         //makes the input all caps
         this.ticker = ticker;
@@ -122,7 +122,7 @@ public class StockFinder {
         }
 
         //use Gson to extract data from JSON
-        StockDetails[] stockDetails = gson.fromJson(stockResponse, StockDetails[].class);
+        StockDetails stockDetails = gson.fromJson(stockResponse, StockDetails.class);
 
         return stockDetails;
     }
@@ -130,7 +130,7 @@ public class StockFinder {
 
 
     //PURCHASE A STOCK
-    public void buyStock(StockDetails[] stock, Portfolio portfolio){
+    public void buyStock(StockDetails stock, Portfolio portfolio){
 
         while (true) {
             System.out.println("\nWould you like to buy " + ticker + "? (YES/NO)");
@@ -138,11 +138,11 @@ public class StockFinder {
 
             if (userInput.equals("YES")) { //wants to buys stock
 
-                System.out.println("\nCurrent share price of " + ticker + ": " + stock[0].getPrice()); //current share price
+                System.out.println("\nCurrent share price of " + ticker + ": " + stock.getPrice()); //current share price
                 System.out.println("Current cash balance: " + portfolio.getBalance()); //current cash balance
                 System.out.println("How many shares would you like to purchase?"); 
                 int shares = scan.nextInt(); //number of shares the user wants
-                double sharePrice = stock[0].getPrice();
+                double sharePrice = stock.getPrice();
                 double totalOrder = shares * sharePrice; //total value of purchase 
 
                 if (totalOrder > portfolio.getBalance()) { //user is not able to buy stock
@@ -151,11 +151,14 @@ public class StockFinder {
 
                 else if (totalOrder <= portfolio.getBalance()) { //user is able to buy stock
                     System.out.println("Sufficient funds available. Generating order for " + ticker);
-                    Portfolio.Holdings.add(stock); //add stock to portfolio
+                    portfolio.Holdings.add(stock); //add stock to portfolio
                     System.out.println(ticker + " has been purchased.");
 
                     //decrease cash balance
                     portfolio.decreaseCash(totalOrder); //decreases cash in portfolio and restates new cash balance
+                    
+                    //increase share count for that stock in portfolio
+                    stock.increaseShares(userInput, shares); 
                     return;
                 }
             } else if (userInput.equals("NO")) {
@@ -171,8 +174,44 @@ public class StockFinder {
     }
 
     //SELL A STOCK FROM PORTFOLIO
-    public void sellStock(StockDetails[] stock, Portfolio portfolio){
+    public void sellStock(Portfolio portfolio){
 
+        while (true) {
+            System.out.println("\nWhich stock would you like to sell? ");
+            String userInput = scan.next().toUpperCase();
+
+            boolean hasStock = false; //check if user has the stock
+
+            for (int i = 0; i < portfolio.Holdings.size(); i++){
+                if (userInput.equals(portfolio.Holdings.get(i).getSymbol())){ //user has the stock in their portfolio
+                    System.out.println("User has " + userInput + " in their portfolio.");
+                    hasStock = true;
+
+                    System.out.println("\nShares owned of " + userInput + ": " + portfolio.Holdings.get(i).numSharesOwned()); //show user share count
+                    System.out.println("\nPurchase price of each share of " + userInput + ": " + portfolio.Holdings.get(i).getPrice()); //show user purchase price
+
+                    /* 
+                    System.out.println("\nShares owned of " + userInput + ": " + portfolio.Holdings.get(i).getPrice()); //show user purchase price
+                    
+                    Calculate amount of shares to sell
+
+                    */
+                    break;
+                }
+            }
+            
+            if (hasStock == false) { //on the last element and user does not have the stock in their portfolio - sends to main menu
+                System.out.println("User does not have " + userInput + " in their portfolio.");
+                System.out.println("Returning to main menu.");
+                return;
+            }
+
+            else { //returns to main menu after it found the stock
+                System.out.println("\nReturning to main menu.");
+                return;
+            }
+
+        }
 
     }
 

@@ -7,7 +7,7 @@ public class Portfolio {
     //cash balance for the user
     private double cashBalance;
 
-    public static ArrayList<StockDetails[]> Holdings = new ArrayList<StockDetails[]>();
+    public ArrayList<StockDetails> Holdings = new ArrayList<StockDetails>();
 
     //starting cash balance
     public void introCash(double num){
@@ -18,7 +18,7 @@ public class Portfolio {
     //get cash balance
     public double getBalance(){
         return cashBalance;
-        }
+    }
 
     public void decreaseCash(double totalPurchase){
         cashBalance -= totalPurchase; //decreases cash in portfolio - used in buying a stock

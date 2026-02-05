@@ -32,27 +32,28 @@ public class Main {
 Choices for while true loop:
 
 1. Portfolio balance
-2. Portfolio holdings (includes sell)
+2. Portfolio holdings
+3. Sell a stock
 3. Allowable stocks to invest in
-4. Stock info (includes buy)
+4. Stock info (includes purchase of a stock)
 5. Quit the program & save data
 
 */
 
         System.out.println("\nHello " + name + "! Welcome to the Stock Market Simulator.");
         System.out.println("\nThere are a limited amount of stocks you can shoose from: ");
-        System.out.println("\nAAPL, TSLA, AMZN, MSFT, NVDA, GOOGL, META, NFLX, JPM, V, BAC, PYPL, ");
-        System.out.println("\nDIS, T, PFE, COST, INTC, KO, TGT, NKE, SPY, BA, BABA, XOM, ");
-        System.out.println("\nWMT, GE, CSCO, VZ, JNJ, CVX, PLTR, SQ, SHOP, SBUX, SOFI, HOOD, ");
-        System.out.println("\nRBLX, SNAP, AMD, UBER, FDX, ABBV, ETSY, MRNA, LMT, GM, F, LCID, ");
-        System.out.println("\nVWO, SPYG, NOK, ROKU, VIAC, ATVI, BIDU, DOCU, ZM, PINS, TLRY, WBA, ");
-        System.out.println("\nMGM, NIO, C, GS, WFC, ADBE, PEP, UNH, CARR, HCA, TWTR, BILI, SIRI, FUBO, RKT");
+        System.out.println("\nAAPL, TSLA, AMZN, MSFT, NVDA, GOOGL, META, NFLX, JPM, V, BAC, PYPL, " +
+        "\nDIS, T, PFE, COST, INTC, KO, TGT, NKE, SPY, BA, BABA, XOM, " +
+        "\nWMT, GE, CSCO, VZ, JNJ, CVX, PLTR, SQ, SHOP, SBUX, SOFI, HOOD, " +
+        "\nRBLX, SNAP, AMD, UBER, FDX, ABBV, ETSY, MRNA, LMT, GM, F, LCID, " +
+        "\nVWO, SPYG, NOK, ROKU, VIAC, ATVI, BIDU, DOCU, ZM, PINS, TLRY, WBA, " +
+        "\nMGM, NIO, C, GS, WFC, ADBE, PEP, UNH, CARR, HCA, TWTR, BILI, SIRI, FUBO, RKT");
 
 
         //stock input
         System.out.println("Please input a stock: ");
 
-        String ticker = scan.nextLine().toUpperCase();
+        String ticker = scan.next().toUpperCase();
         
         //create an instance of StockFinder
         StockFinder stockFinder = new StockFinder();

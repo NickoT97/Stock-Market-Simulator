@@ -20,6 +20,7 @@ public class StockDetails {
     private double open;
     private double previousClose;
     private double timestamp;
+    private int numSharesOwned = 0;
 
     public String getSymbol(){
         return symbol;
@@ -88,4 +89,19 @@ public class StockDetails {
     public double getTimestamp(){
         return timestamp;
     }
+
+    public int numSharesOwned(){
+        return numSharesOwned;
+    }
+
+    public void increaseShares(String symbol, int shareCount){ //used for buying a stock
+        numSharesOwned += shareCount;
+        System.out.println("Updated amount of shares for " + symbol + ": " + numSharesOwned); //new amount of shares
+    }
+
+    public void decreaseShares(String symbol, int shareCount){ //used for selling a stock
+        numSharesOwned -= shareCount;
+        System.out.println("Updated amount of shares for " + symbol + ": " + numSharesOwned); //new amount of shares
+    }
+
 }
