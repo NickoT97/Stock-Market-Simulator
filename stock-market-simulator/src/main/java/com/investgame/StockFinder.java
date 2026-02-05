@@ -72,8 +72,7 @@ public class StockFinder {
                     break;
                 case 17: System.out.println(stockDetails.getTimestamp());
                     break;
-                default: System.out.println("Invalid. Enter again: ");
-                    num = scan.nextInt();
+                default: System.out.println("Invalid input. Please try again.");
                     break; 
             }
 
@@ -150,15 +149,16 @@ public class StockFinder {
                 }
 
                 else if (totalOrder <= portfolio.getBalance()) { //user is able to buy stock
-                    System.out.println("Sufficient funds available. Generating order for " + ticker);
+                    System.out.println("\nSufficient funds available. Generating buy order for " + ticker);
                     portfolio.Holdings.add(stock); //add stock to portfolio
                     System.out.println(ticker + " has been purchased.");
 
                     //decrease cash balance
                     portfolio.decreaseCash(totalOrder); //decreases cash in portfolio and restates new cash balance
+                    System.out.println("New cash balance: " + portfolio.getBalance());
                     
                     //increase share count for that stock in portfolio
-                    stock.increaseShares(userInput, shares); 
+                    stock.increaseShares(shares); 
                     return;
                 }
             } else if (userInput.equals("NO")) {
@@ -190,24 +190,40 @@ public class StockFinder {
                     System.out.println("\nShares owned of " + userInput + ": " + portfolio.Holdings.get(i).numSharesOwned()); //show user share count
                     System.out.println("\nPurchase price of each share of " + userInput + ": " + portfolio.Holdings.get(i).getPrice()); //show user purchase price
 
-                    /* 
-                    System.out.println("\nShares owned of " + userInput + ": " + portfolio.Holdings.get(i).getPrice()); //show user purchase price
-                    
-                    Calculate amount of shares to sell
+                    System.out.println("\nHow many shares would you like to sell of " + userInput + "?"); //ask user for how many shares they'd like to sell
+                    int sellShares = scan.nextInt(); //get amount
+                    double saleTotal = sellShares * portfolio.Holdings.get(i).getPrice(); //total sell order
 
-                    */
-                    break;
+                    if (sellShares > portfolio.Holdings.get(i).numSharesOwned()) { //user is not able to sell stock
+                        System.out.println("Insufficient amount of shares available. Restarting process.");
+                        break; //exit for loop and restart the while loop since hasStock is still true, not false
+                    }
+
+                    else if (sellShares <= portfolio.Holdings.get(i).numSharesOwned()) { //user is able to sell stock
+                        System.out.println("\nSufficient shares available. Generating sell order for " + ticker);
+
+                        //decrease share count for that stock in portfolio
+                        stock.decreaseShares(sellShares); 
+
+                        //if shares of a company is 0, remove from holdings
+                        if (portfolio.Holdings.get(i).numSharesOwned() == 0){
+                            portfolio.Holdings.remove(i); //remove stock from portfolio
+                        }
+
+                        System.out.println(sellShares + " shares of " + ticker + " has been sold."); //order confirmation
+
+                        //increase cash balance
+                        portfolio.increaseCash(saleTotal); //decreases cash in portfolio and restates new cash balance
+                        System.out.println("New cash balance: " + portfolio.getBalance());
+
+                        return; //exit method after successful transaction
+                    }
                 }
             }
             
-            if (hasStock == false) { //on the last element and user does not have the stock in their portfolio - sends to main menu
+            if (hasStock == false) { //check if stock wasn't found
                 System.out.println("User does not have " + userInput + " in their portfolio.");
                 System.out.println("Returning to main menu.");
-                return;
-            }
-
-            else { //returns to main menu after it found the stock
-                System.out.println("\nReturning to main menu.");
                 return;
             }
 

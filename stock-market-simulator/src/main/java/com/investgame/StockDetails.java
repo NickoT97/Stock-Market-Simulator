@@ -94,12 +94,12 @@ public class StockDetails {
         return numSharesOwned;
     }
 
-    public void increaseShares(String symbol, int shareCount){ //used for buying a stock
+    public void increaseShares(int shareCount){ //used for buying a stock
         numSharesOwned += shareCount;
         System.out.println("Updated amount of shares for " + symbol + ": " + numSharesOwned); //new amount of shares
     }
 
-    public void decreaseShares(String symbol, int shareCount){ //used for selling a stock
+    public void decreaseShares(int shareCount){ //used for selling a stock
         numSharesOwned -= shareCount;
         System.out.println("Updated amount of shares for " + symbol + ": " + numSharesOwned); //new amount of shares
     }
