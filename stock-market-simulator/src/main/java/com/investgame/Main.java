@@ -40,6 +40,6 @@ public class Main {
         StockFinder stockFinder = new StockFinder();
         
         //call the stockInfo method
-        stockFinder.stockInfo(ticker);
+        stockFinder.stockInfo(ticker, portfolio);
    }
 }

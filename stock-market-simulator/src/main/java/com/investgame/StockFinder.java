@@ -23,7 +23,7 @@ public class StockFinder {
 
 
     //GENERATE STOCK INFO (price, name, etc.)
-    public void stockInfo(String ticker) throws Exception {
+    public void stockInfo(String ticker, Portfolio portfolio) throws Exception {
 
         StockDetails[] stockDetails = getQuote(ticker);
 
@@ -87,7 +87,7 @@ public class StockFinder {
                 if (userInput.equals("YES")) {
                     break; //break inner loop, continue outer loop
                 } else if (userInput.equals("NO")) {
-                    buyStock(stockDetails); //buy the stock
+                    buyStock(stockDetails, portfolio); //buy the stock
                     return; //exit the entire method
                 } else {
                     System.out.println("Invalid input. Type either YES or NO.");
@@ -130,15 +130,11 @@ public class StockFinder {
 
 
     //PURCHASE A STOCK
-    public void buyStock(StockDetails[] stock){
-        
-
-        //FIX THIS - USE INSTANCE OF PORTFOLIO IN MAIN (pass on objects)
-        Portfolio portfolio = new Portfolio();
+    public void buyStock(StockDetails[] stock, Portfolio portfolio){
 
         while (true) {
             System.out.println("\nWould you like to buy " + ticker + "? (YES/NO)");
-            String userInput = scan.nextLine().toUpperCase();
+            String userInput = scan.next().toUpperCase();
 
             if (userInput.equals("YES")) { //wants to buys stock
 
@@ -150,8 +146,7 @@ public class StockFinder {
                 double totalOrder = shares * sharePrice; //total value of purchase 
 
                 if (totalOrder > portfolio.getBalance()) { //user is not able to buy stock
-                    System.out.println("Insufficient funds. Returning to main menu.");
-                    return;
+                    System.out.println("Insufficient funds. Restarting process.");
                 }
 
                 else if (totalOrder <= portfolio.getBalance()) { //user is able to buy stock
@@ -163,8 +158,6 @@ public class StockFinder {
                     portfolio.decreaseCash(totalOrder); //decreases cash in portfolio and restates new cash balance
                     return;
                 }
-
-                break; //break inner loop, continue outer loop
             } else if (userInput.equals("NO")) {
                 System.out.println(ticker + " will not be purchased.");
                 return; //exit the entire method
@@ -178,7 +171,7 @@ public class StockFinder {
     }
 
     //SELL A STOCK FROM PORTFOLIO
-    public void sellStock(StockDetails[] stock){
+    public void sellStock(StockDetails[] stock, Portfolio portfolio){
 
 
     }
