@@ -65,7 +65,7 @@ Choices for while true loop:
                     stockFinder.sellStock(portfolio);
                     break;
                 case 4: //allowable stocks to invest in
-                    System.out.println("\nThere are a limited amount of stocks you can shoose from: ");
+                    System.out.println("\nThere are a limited amount of stocks you can choose from: ");
                     System.out.println("\nAAPL, TSLA, AMZN, MSFT, NVDA, GOOGL, META, NFLX, JPM, V, BAC, PYPL, " +
                     "\nDIS, T, PFE, COST, INTC, KO, TGT, NKE, SPY, BA, BABA, XOM, " +
                     "\nWMT, GE, CSCO, VZ, JNJ, CVX, PLTR, SQ, SHOP, SBUX, SOFI, HOOD, " +

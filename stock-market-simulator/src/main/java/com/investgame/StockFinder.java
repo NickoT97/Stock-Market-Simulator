@@ -25,7 +25,7 @@ public class StockFinder {
     //GENERATE STOCK INFO (price, name, etc.)
     public void stockInfo(String ticker, Portfolio portfolio) throws Exception {
 
-        StockDetails stockDetails = getQuote(ticker);
+        StockDetails[] stockDetails = getQuote(ticker);
 
         //getting information on the stock
         for ( ; ; ){
@@ -38,39 +38,39 @@ public class StockFinder {
             int num = scan.nextInt();
             
             switch (num) {
-                case 1: System.out.println(stockDetails.getSymbol());
+                case 1: System.out.println(stockDetails[0].getSymbol());
                     break;
-                case 2: System.out.println(stockDetails.getName());
+                case 2: System.out.println(stockDetails[0].getName());
                     break;
-                case 3: System.out.println(stockDetails.getPrice());
+                case 3: System.out.println(stockDetails[0].getPrice());
                     break;
-                case 4: System.out.println(stockDetails.getChangePercentage());
+                case 4: System.out.println(stockDetails[0].getChangePercentage());
                     break;
-                case 5: System.out.println(stockDetails.getChange());
+                case 5: System.out.println(stockDetails[0].getChange());
                     break;
-                case 6: System.out.println(stockDetails.getVolume());
+                case 6: System.out.println(stockDetails[0].getVolume());
                     break;
-                case 7: System.out.println(stockDetails.getDayLow());
+                case 7: System.out.println(stockDetails[0].getDayLow());
                     break;
-                case 8: System.out.println(stockDetails.getDayHigh());
+                case 8: System.out.println(stockDetails[0].getDayHigh());
                     break;
-                case 9: System.out.println(stockDetails.getYearHigh());
+                case 9: System.out.println(stockDetails[0].getYearHigh());
                     break;
-                case 10: System.out.println(stockDetails.getYearLow());
+                case 10: System.out.println(stockDetails[0].getYearLow());
                     break;
-                case 11: System.out.println(stockDetails.getMarketCap());
+                case 11: System.out.println(stockDetails[0].getMarketCap());
                     break;
-                case 12: System.out.println(stockDetails.getPriceAvg50());
+                case 12: System.out.println(stockDetails[0].getPriceAvg50());
                     break;
-                case 13: System.out.println(stockDetails.getPriceAvg200());
+                case 13: System.out.println(stockDetails[0].getPriceAvg200());
                     break;
-                case 14: System.out.println(stockDetails.getExchange());
+                case 14: System.out.println(stockDetails[0].getExchange());
                     break;
-                case 15: System.out.println(stockDetails.getOpen());
+                case 15: System.out.println(stockDetails[0].getOpen());
                     break;
-                case 16: System.out.println(stockDetails.getPreviousClose());
+                case 16: System.out.println(stockDetails[0].getPreviousClose());
                     break;
-                case 17: System.out.println(stockDetails.getTimestamp());
+                case 17: System.out.println(stockDetails[0].getTimestamp());
                     break;
                 default: System.out.println("Invalid input. Please try again.");
                     break; 
@@ -86,7 +86,7 @@ public class StockFinder {
                 if (userInput.equals("YES")) {
                     break; //break inner loop, continue outer loop
                 } else if (userInput.equals("NO")) {
-                    buyStock(stockDetails, portfolio); //buy the stock
+                    buyStock(stockDetails[0], portfolio); //buy the stock
                     return; //exit the entire method
                 } else {
                     System.out.println("Invalid input. Type either YES or NO.");
@@ -99,7 +99,7 @@ public class StockFinder {
 
 
     //OBTAIN INFORMATION FROM FMP
-    public StockDetails getQuote(String ticker) throws Exception {
+    public StockDetails[] getQuote(String ticker) throws Exception {
 
         //makes the input all caps
         this.ticker = ticker;
@@ -121,7 +121,7 @@ public class StockFinder {
         }
 
         //use Gson to extract data from JSON
-        StockDetails stockDetails = gson.fromJson(stockResponse, StockDetails.class);
+        StockDetails[] stockDetails = gson.fromJson(stockResponse, StockDetails[].class);
 
         return stockDetails;
     }
@@ -155,7 +155,6 @@ public class StockFinder {
 
                     //decrease cash balance
                     portfolio.decreaseCash(totalOrder); //decreases cash in portfolio and restates new cash balance
-                    System.out.println("New cash balance: " + portfolio.getBalance());
                     
                     //increase share count for that stock in portfolio
                     stock.increaseShares(shares); 
@@ -214,14 +213,13 @@ public class StockFinder {
 
                         //increase cash balance
                         portfolio.increaseCash(saleTotal); //decreases cash in portfolio and restates new cash balance
-                        System.out.println("New cash balance: " + portfolio.getBalance());
 
                         return; //exit method after successful transaction
                     }
                 }
             }
             
-            if (hasStock == false) { //check if stock wasn't found
+            if (!hasStock) { //check if stock wasn't found
                 System.out.println("User does not have " + userInput + " in their portfolio.");
                 System.out.println("Returning to main menu.");
                 return;
