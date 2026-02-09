@@ -41,7 +41,7 @@ Choices for while true loop:
 3. Sell a stock
 4. Allowable stocks to invest in
 5. Stock info (includes purchase of a stock)
-6. Quit the program
+6. Quit the program and save data
 
 */
 
