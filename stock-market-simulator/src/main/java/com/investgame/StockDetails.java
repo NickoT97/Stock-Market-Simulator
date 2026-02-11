@@ -5,7 +5,7 @@ package com.investgame;
 public class StockDetails {
     private String symbol;
     private String name;
-    private double price;
+    private double price; //purchase price
     private double changePercentage;
     private double change;
     private double volume;
@@ -21,6 +21,7 @@ public class StockDetails {
     private double previousClose;
     private double timestamp;
     private int numSharesOwned = 0;
+    private double currentPrice = 0; //updated share price
 
     public String getSymbol(){
         return symbol;
@@ -90,8 +91,12 @@ public class StockDetails {
         return timestamp;
     }
 
-    public int numSharesOwned(){
+    public int getNumSharesOwned(){
         return numSharesOwned;
+    }
+
+    public double getCurrentPrice(){
+        return currentPrice;
     }
 
     public void increaseShares(int shareCount){ //used for buying a stock
@@ -102,6 +107,10 @@ public class StockDetails {
     public void decreaseShares(int shareCount){ //used for selling a stock
         numSharesOwned -= shareCount;
         System.out.println("Updated amount of shares for " + symbol + ": " + numSharesOwned); //new amount of shares
+    }
+
+    public void updateCurrentPrice(double newPrice){ //set current price when: 1. buy a stock and/or 2. updating holdings
+        currentPrice = newPrice;
     }
 
 }

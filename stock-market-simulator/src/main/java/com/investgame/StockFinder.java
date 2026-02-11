@@ -139,7 +139,7 @@ public class StockFinder {
 
                 System.out.println("\nCurrent share price of " + ticker + ": " + stock.getPrice()); //current share price
                 System.out.println("Current cash balance: " + portfolio.getBalance()); //current cash balance
-                System.out.println("How many shares would you like to purchase?"); 
+                System.out.println("\nHow many shares would you like to purchase?"); 
                 int shares = scan.nextInt(); //number of shares the user wants
                 double sharePrice = stock.getPrice();
                 double totalOrder = shares * sharePrice; //total value of purchase 
@@ -158,6 +158,8 @@ public class StockFinder {
                     
                     //increase share count for that stock in portfolio
                     stock.increaseShares(shares); 
+
+                    stock.updateCurrentPrice(sharePrice); //current price of stock
                     return;
                 }
             } else if (userInput.equals("NO")) {
@@ -182,30 +184,34 @@ public class StockFinder {
             boolean hasStock = false; //check if user has the stock
 
             for (int i = 0; i < portfolio.Holdings.size(); i++){
-                if (userInput.equals(portfolio.Holdings.get(i).getSymbol())){ //user has the stock in their portfolio
+
+                StockDetails stock = portfolio.Holdings.get(i); //refer to stock at position i in holdings arraylist
+
+                if (userInput.equals(stock.getSymbol())){ //user has the stock in their portfolio
                     System.out.println("User has " + userInput + " in their portfolio.");
                     hasStock = true;
 
-                    System.out.println("\nShares owned of " + userInput + ": " + portfolio.Holdings.get(i).numSharesOwned()); //show user share count
-                    System.out.println("\nPurchase price of each share of " + userInput + ": " + portfolio.Holdings.get(i).getPrice()); //show user purchase price
+                    System.out.println("\nShares owned of " + userInput + ": " + stock.getNumSharesOwned()); //show user share count
+                    System.out.println("\nPurchase price of each share of " + userInput + ": " + stock.getPrice()); //show user purchase price
+                    System.out.println("\nCurrent price of each share of " + userInput + ": " + stock.getCurrentPrice()); //show user current price
 
                     System.out.println("\nHow many shares would you like to sell of " + userInput + "?"); //ask user for how many shares they'd like to sell
                     int sellShares = scan.nextInt(); //get amount
-                    double saleTotal = sellShares * portfolio.Holdings.get(i).getPrice(); //total sell order
+                    double saleTotal = sellShares * stock.getCurrentPrice(); //total sell order
 
-                    if (sellShares > portfolio.Holdings.get(i).numSharesOwned()) { //user is not able to sell stock
+                    if (sellShares > stock.getNumSharesOwned()) { //user is not able to sell stock
                         System.out.println("Insufficient amount of shares available. Restarting process.");
                         break; //exit for loop and restart the while loop since hasStock is still true, not false
                     }
 
-                    else if (sellShares <= portfolio.Holdings.get(i).numSharesOwned()) { //user is able to sell stock
+                    else if (sellShares <= stock.getNumSharesOwned()) { //user is able to sell stock
                         System.out.println("\nSufficient shares available. Generating sell order for " + ticker);
 
                         //decrease share count for that stock in portfolio
                         stock.decreaseShares(sellShares); 
 
                         //if shares of a company is 0, remove from holdings
-                        if (portfolio.Holdings.get(i).numSharesOwned() == 0){
+                        if (stock.getNumSharesOwned() == 0){
                             portfolio.Holdings.remove(i); //remove stock from portfolio
                         }
 
@@ -229,6 +235,37 @@ public class StockFinder {
 
     }
 
+    public void updateHoldingsData(Portfolio portfolio) throws Exception { //update current price in portfolio
+
+        if (portfolio.Holdings.size() == 0){ //no stocks owned
+            System.out.println("You have no stocks owned. Returning to main menu."); 
+            return;
+        }
+        
+        else{ //at least one stock is owned
+            for (int i = 0; i < portfolio.Holdings.size(); i++){ //iterate through portfolio
+                StockDetails stock = portfolio.Holdings.get(i); //stock in portfolio
+                String stockName = stock.getSymbol(); //stock symbol in portfolio
+
+                StockDetails[] newStockDetails = getQuote(stockName); //updated quote for stock at index i
+
+                double newPrice = newStockDetails[0].getPrice(); //new price of current stock
+
+                stock.updateCurrentPrice(newPrice); //set the new price for the one in holdings
+
+                System.out.println("\n" + stock.getName() + " - " + stock.getSymbol()); //state name and symbol
+                System.out.println("Current price: " + stock.getCurrentPrice()); //state current price
+                System.out.println("Purchase price: " + stock.getPrice()); //state purchase price
+
+                double intProfitOrLoss = stock.getCurrentPrice() - stock.getPrice();
+
+                System.out.println("Unrealized net gain/loss: " + intProfitOrLoss); //state unrealized net gain/loss
+
+                System.out.println("\n----------------------------------------------"); //separate stocks
+
+            }
+        }
+    }
     
 
 }

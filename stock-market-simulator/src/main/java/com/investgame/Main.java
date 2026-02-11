@@ -47,19 +47,17 @@ Choices for while true loop:
 
         while (true){ //the simulation starts on an infinite loop
             
-            System.out.println("What would you like to do? Please type out one of the following numbers (ex. 2): ");
-            System.out.println("1. Portfolio balance\n2. Portfolio holdings\n3. Sell a stock\n4. Allowable stocks to invest in\n5. Stock info (including purchase of a stock\n6. Quit program");
+            System.out.println("\nWhat would you like to do? Please type out one of the following numbers (ex. 2): ");
+            System.out.println("1. Portfolio cash balance\n2. Portfolio holdings\n3. Sell a stock\n4. Allowable stocks to invest in\n5. Stock info (including purchase of a stock\n6. Quit program");
             int response = scan.nextInt();
             scan.nextLine();
 
             switch (response) {
-                case 1: //portfolio balance
-                    System.out.println("Portfolio balance: " + portfolio.getBalance());
+                case 1: //portfolio cash balance
+                    System.out.println("Portfolio cash balance: " + portfolio.getBalance());
                     break;
                 case 2: //portfolio holdings
-                    for (int i = 0; i < portfolio.Holdings.size(); i++){
-                        System.out.println(portfolio.Holdings.get(i).getName() + " - " + portfolio.Holdings.get(i).getSymbol());
-                    }
+                    stockFinder.updateHoldingsData(portfolio); 
                     break;
                 case 3: //sell a stock
                     stockFinder.sellStock(portfolio);
@@ -75,7 +73,7 @@ Choices for while true loop:
                     break;
                 case 5: //stock info and purchasing a stock
                     //stock input
-                    System.out.println("Please input a stock: ");
+                    System.out.println("\nPlease input a stock: ");
                     String ticker = scan.next().toUpperCase();
             
                     //call the stockInfo method
