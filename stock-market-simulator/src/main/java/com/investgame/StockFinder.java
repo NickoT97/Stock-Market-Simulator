@@ -38,39 +38,39 @@ public class StockFinder {
             int num = scan.nextInt();
             
             switch (num) {
-                case 1: System.out.println(stockDetails[0].getSymbol());
+                case 1: System.out.println("Symbol: " + stockDetails[0].getSymbol());
                     break;
-                case 2: System.out.println(stockDetails[0].getName());
+                case 2: System.out.println("Name: " + stockDetails[0].getName());
                     break;
-                case 3: System.out.println(stockDetails[0].getPrice());
+                case 3: System.out.println("Price: $ " + stockDetails[0].getPrice());
                     break;
-                case 4: System.out.println(stockDetails[0].getChangePercentage());
+                case 4: System.out.println("Percentage Change: " + stockDetails[0].getChangePercentage() + "%");
                     break;
-                case 5: System.out.println(stockDetails[0].getChange());
+                case 5: System.out.println("Change: " + stockDetails[0].getChange());
                     break;
-                case 6: System.out.println(stockDetails[0].getVolume());
+                case 6: System.out.println("Volume: " + stockDetails[0].getVolume());
                     break;
-                case 7: System.out.println(stockDetails[0].getDayLow());
+                case 7: System.out.println("Day Low: $" + stockDetails[0].getDayLow());
                     break;
-                case 8: System.out.println(stockDetails[0].getDayHigh());
+                case 8: System.out.println("Day High: $" + stockDetails[0].getDayHigh());
                     break;
-                case 9: System.out.println(stockDetails[0].getYearHigh());
+                case 9: System.out.println("Year High: $" + stockDetails[0].getYearHigh());
                     break;
-                case 10: System.out.println(stockDetails[0].getYearLow());
+                case 10: System.out.println("Year Low: $" + stockDetails[0].getYearLow());
                     break;
-                case 11: System.out.println(stockDetails[0].getMarketCap());
+                case 11: System.out.println("Market Cap: $" + stockDetails[0].getMarketCap());
                     break;
-                case 12: System.out.println(stockDetails[0].getPriceAvg50());
+                case 12: System.out.println("Avg Price (50 days): $" + stockDetails[0].getPriceAvg50());
                     break;
-                case 13: System.out.println(stockDetails[0].getPriceAvg200());
+                case 13: System.out.println("Avg Price (200 days): $" + stockDetails[0].getPriceAvg200());
                     break;
-                case 14: System.out.println(stockDetails[0].getExchange());
+                case 14: System.out.println("Exchange: " + stockDetails[0].getExchange());
                     break;
-                case 15: System.out.println(stockDetails[0].getOpen());
+                case 15: System.out.println("Open Price: $" + stockDetails[0].getOpen());
                     break;
-                case 16: System.out.println(stockDetails[0].getPreviousClose());
+                case 16: System.out.println("Previous Close Price: $" + stockDetails[0].getPreviousClose());
                     break;
-                case 17: System.out.println(stockDetails[0].getTimestamp());
+                case 17: System.out.println("Timestamp: " + stockDetails[0].getTimestamp());
                     break;
                 default: System.out.println("Invalid input. Please try again.");
                     break; 
@@ -150,16 +150,32 @@ public class StockFinder {
 
                 else if (totalOrder <= portfolio.getBalance()) { //user is able to buy stock
                     System.out.println("\nSufficient funds available. Generating buy order for " + ticker);
-                    portfolio.Holdings.add(stock); //add stock to portfolio
-                    System.out.println(ticker + " has been purchased.");
+
+                    boolean alreadyOwnedStock = false;
+                    StockDetails existingStock = null;
+
+                    for (int i = 0; i < portfolio.Holdings.size(); i++){ //check if stock is already owned
+                        StockDetails arrayStock = portfolio.Holdings.get(i);
+                        if (ticker.equals(arrayStock.getSymbol())){
+                            alreadyOwnedStock = true; //user owns the stock
+                            existingStock = arrayStock;
+                            break;
+                        }
+                    }
+
+                    if (alreadyOwnedStock == false){ //user doesn't own stock, add to portfolio - first time buying    
+                        stock.addPurchase(shares, sharePrice);
+                        portfolio.Holdings.add(stock); //add to portfolio
+                        System.out.println(ticker + " has been added to your portfolio.");
+                    }
+                    else { //user already owns stock
+                        existingStock.addPurchase(shares, sharePrice);
+                        System.out.println(shares + " shares has been added to " + ticker + ".");
+                    }
 
                     //decrease cash balance
                     portfolio.decreaseCash(totalOrder); //decreases cash in portfolio and restates new cash balance
-                    
-                    //increase share count for that stock in portfolio
-                    stock.increaseShares(shares); 
 
-                    stock.updateCurrentPrice(sharePrice); //current price of stock
                     return;
                 }
             } else if (userInput.equals("NO")) {
@@ -175,7 +191,7 @@ public class StockFinder {
     }
 
     //SELL A STOCK FROM PORTFOLIO
-    public void sellStock(Portfolio portfolio){
+    public void sellStock(Portfolio portfolio) throws Exception{
 
         while (true) {
             System.out.println("\nWhich stock would you like to sell? ");
@@ -191,9 +207,14 @@ public class StockFinder {
                     System.out.println("User has " + userInput + " in their portfolio.");
                     hasStock = true;
 
+                    //update current price to the current market price
+                    StockDetails[] updatedData = getQuote(userInput);
+                    double currentPrice = updatedData[0].getPrice(); //get the current market price from the quote
+                    stock.updateCurrentPrice(currentPrice); //update stocks current market price
+
                     System.out.println("\nShares owned of " + userInput + ": " + stock.getNumSharesOwned()); //show user share count
-                    System.out.println("\nPurchase price of each share of " + userInput + ": " + stock.getPrice()); //show user purchase price
-                    System.out.println("\nCurrent price of each share of " + userInput + ": " + stock.getCurrentPrice()); //show user current price
+                    System.out.println("\nAverage purchase price of each share of " + userInput + ": $" + stock.getAvgSharePrice()); //show user avg purchase price
+                    System.out.println("\nCurrent market price price of " + userInput + ": $" + stock.getCurrentPrice()); //show user the current market share price
 
                     System.out.println("\nHow many shares would you like to sell of " + userInput + "?"); //ask user for how many shares they'd like to sell
                     int sellShares = scan.nextInt(); //get amount
@@ -205,17 +226,17 @@ public class StockFinder {
                     }
 
                     else if (sellShares <= stock.getNumSharesOwned()) { //user is able to sell stock
-                        System.out.println("\nSufficient shares available. Generating sell order for " + ticker);
+                        System.out.println("\nSufficient shares available. Generating sell order for " + userInput);
 
-                        //decrease share count for that stock in portfolio
-                        stock.decreaseShares(sellShares); 
+                        //sale transaction in portfolio
+                        stock.removeSale(sellShares); 
 
                         //if shares of a company is 0, remove from holdings
                         if (stock.getNumSharesOwned() == 0){
                             portfolio.Holdings.remove(i); //remove stock from portfolio
                         }
 
-                        System.out.println(sellShares + " shares of " + ticker + " has been sold."); //order confirmation
+                        System.out.println(sellShares + " shares of " + userInput + " has been sold."); //order confirmation
 
                         //increase cash balance
                         portfolio.increaseCash(saleTotal); //decreases cash in portfolio and restates new cash balance
@@ -255,11 +276,11 @@ public class StockFinder {
 
                 System.out.println("\n" + stock.getName() + " - " + stock.getSymbol()); //state name and symbol
                 System.out.println("Current price: " + stock.getCurrentPrice()); //state current price
-                System.out.println("Purchase price: " + stock.getPrice()); //state purchase price
+                System.out.println("Average purchase price: " + stock.getAvgSharePrice()); //state avg purchase price
 
-                double intProfitOrLoss = stock.getCurrentPrice() - stock.getPrice();
+                double intProfitOrLoss = (stock.getCurrentPrice() - stock.getAvgSharePrice()) * stock.getNumSharesOwned();
 
-                System.out.println("Unrealized net gain/loss: " + intProfitOrLoss); //state unrealized net gain/loss
+                System.out.println("Unrealized net gain/loss: $" + intProfitOrLoss); //state unrealized net gain/loss
 
                 System.out.println("\n----------------------------------------------"); //separate stocks
 

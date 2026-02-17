@@ -74,7 +74,7 @@ Choices for while true loop:
                 case 5: //stock info and purchasing a stock
                     //stock input
                     System.out.println("\nPlease input a stock: ");
-                    String ticker = scan.next().toUpperCase();
+                    String ticker = scan.nextLine().toUpperCase();
             
                     //call the stockInfo method
                     stockFinder.stockInfo(ticker, portfolio);
@@ -92,6 +92,6 @@ Choices for while true loop:
             
             
     
-            }
+        }
    }
 }

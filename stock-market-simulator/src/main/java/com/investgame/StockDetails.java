@@ -22,6 +22,7 @@ public class StockDetails {
     private double timestamp;
     private int numSharesOwned = 0;
     private double currentPrice = 0; //updated share price
+    private double totalStockCost = 0; //total value of stock - used to get avg share price
 
     public String getSymbol(){
         return symbol;
@@ -99,16 +100,34 @@ public class StockDetails {
         return currentPrice;
     }
 
-    public void increaseShares(int shareCount){ //used for buying a stock
-        numSharesOwned += shareCount;
-        System.out.println("Updated amount of shares for " + symbol + ": " + numSharesOwned); //new amount of shares
+    public double getTotalStockCost(){
+        return totalStockCost;
     }
 
-    public void decreaseShares(int shareCount){ //used for selling a stock
-        numSharesOwned -= shareCount;
-        System.out.println("Updated amount of shares for " + symbol + ": " + numSharesOwned); //new amount of shares
+    public double getAvgSharePrice(){
+        if (numSharesOwned == 0){
+            return 0;
+        }
+
+        return totalStockCost / numSharesOwned; //total cost of stock (share price * shares) divided by total shares owned
+
     }
 
+    public void addPurchase(int shareCount, double pricePerShare){ //used for buying a stock
+        numSharesOwned += shareCount; //total shares owned
+        totalStockCost += (shareCount * pricePerShare); //add the total cost of the stock
+        System.out.println("Bought " + shareCount + " shares. Updated amount of shares for " + symbol + ": " + numSharesOwned); //new amount of shares
+        System.out.println("New average share price: $" + getAvgSharePrice()); //new average share price
+    }
+
+    public void removeSale(int shareCount){ //used for selling a stock
+        if (shareCount < numSharesOwned){
+            double avgPrice = getAvgSharePrice(); //avg price of stock
+            numSharesOwned -= shareCount; //reduce total shares owned
+            totalStockCost -= (shareCount * avgPrice); //update total cost of the stock owned
+            System.out.println("Sold " + shareCount + " shares. Updated amount of shares for " + symbol + ": " + numSharesOwned); //new amount of shares
+        }
+    }
     public void updateCurrentPrice(double newPrice){ //set current price when: 1. buy a stock and/or 2. updating holdings
         currentPrice = newPrice;
     }
