@@ -20,6 +20,11 @@ public class Portfolio {
         return cashBalance;
     }
 
+    //set cash balance from data sabed
+    public void setBalance(double cash){
+        this.cashBalance = cash;
+    }
+
     public void decreaseCash(double totalPurchase){
         cashBalance -= totalPurchase; //decreases cash in portfolio - used in buying a stock
         System.out.println("New cash balance: " + cashBalance); //new cash balance

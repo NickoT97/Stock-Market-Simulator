@@ -1,7 +1,5 @@
 package com.investgame;
 
-//details of the JSON file and getter methods
-
 public class StockDetails {
     private String symbol;
     private String name;

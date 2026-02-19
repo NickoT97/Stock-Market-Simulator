@@ -48,7 +48,7 @@ Choices for while true loop:
         while (true){ //the simulation starts on an infinite loop
             
             System.out.println("\nWhat would you like to do? Please type out one of the following numbers (ex. 2): ");
-            System.out.println("1. Portfolio cash balance\n2. Portfolio holdings\n3. Sell a stock\n4. Allowable stocks to invest in\n5. Stock info (including purchase of a stock\n6. Quit program");
+            System.out.println("1. Portfolio cash balance\n2. Portfolio holdings\n3. Sell a stock\n4. Allowable stocks to invest in\n5. Stock info (including purchase of a stock)\n6. Quit program");
             int response = scan.nextInt();
             scan.nextLine();
 
