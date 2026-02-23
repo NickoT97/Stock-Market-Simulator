@@ -280,7 +280,7 @@ public class StockFinder {
 
                 double intProfitOrLoss = (stock.getCurrentPrice() - stock.getAvgSharePrice()) * stock.getNumSharesOwned();
 
-                System.out.println("Unrealized net gain/loss: $" + intProfitOrLoss); //state unrealized net gain/loss
+                System.out.println("Unrealized net gain/loss: $" + (Math.round(intProfitOrLoss * 100)) / 100); //state unrealized net gain/loss
 
                 System.out.println("\n----------------------------------------------"); //separate stocks
 
