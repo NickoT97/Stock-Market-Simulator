@@ -5,6 +5,8 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 
 import com.google.gson.Gson; 
@@ -59,6 +61,23 @@ public class Data {
         //.exists() - returns true if something exists at that path
         //.isFile() - returns true if the path goes to an actual file
         return holdingsFile.exists() && holdingsFile.isFile() && cashFile.exists() && cashFile.isFile(); 
+    }
+
+    public void deleteSavedData() { //delete saved data files
+        try {
+            boolean holdingsDeleted = Files.deleteIfExists(Paths.get("holdingsData.json"));
+            boolean cashDeleted = Files.deleteIfExists(Paths.get("cashData.json"));
+            
+            if (holdingsDeleted && cashDeleted) {
+                System.out.println("Saved data deleted successfully.");
+            } else if (holdingsDeleted || cashDeleted) {
+                System.out.println("Some saved data files were deleted.");
+            } else {
+                System.out.println("No saved data files found to delete.");
+            }
+        } catch (IOException e) {
+            System.out.println("Error deleting saved data: " + e.getMessage());
+        }
     }
 
 }
