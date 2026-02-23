@@ -26,12 +26,12 @@ public class Portfolio {
     }
 
     public void decreaseCash(double totalPurchase){
-        cashBalance -= totalPurchase; //decreases cash in portfolio - used in buying a stock
+        cashBalance -= totalPurchase; //decreases cash in portfolio - used in buying a stock or withdrawal
         System.out.println("New cash balance: " + cashBalance); //new cash balance
     }
 
     public void increaseCash(double totalSale){
-        cashBalance += totalSale; //increases cash in portfolio - used in selling a stock
+        cashBalance += totalSale; //increases cash in portfolio - used in selling a stock or deposit
         System.out.println("New cash balance: " + cashBalance); //new cash balance
     }
 

@@ -1,5 +1,6 @@
 package com.investgame;
 
+import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -20,7 +21,7 @@ public class Data {
         } catch (IOException e) {}
 
         try (FileWriter cashWriter = new FileWriter("cashData.json")) { //write a new json file called cashData
-            new Gson().toJson(portfolio.getBalance(), cashWriter); //convert the data of Holdings into a JSON using FileWriter
+            new Gson().toJson(portfolio.getBalance(), cashWriter); //convert the data of cash balance into a JSON using FileWriter
         } catch (IOException e) {}
 
     } 
@@ -50,5 +51,14 @@ public class Data {
         } catch (IOException e) {}
 
     } 
+
+    public boolean hasSavedData() { //check if saved data files exist
+        File holdingsFile = new File("holdingsData.json"); //creates a File object, showing path to the file
+        File cashFile = new File("cashData.json"); //creates a File object, showing path to the file
+
+        //.exists() - returns true if something exists at that path
+        //.isFile() - returns true if the path goes to an actual file
+        return holdingsFile.exists() && holdingsFile.isFile() && cashFile.exists() && cashFile.isFile(); 
+    }
 
 }
