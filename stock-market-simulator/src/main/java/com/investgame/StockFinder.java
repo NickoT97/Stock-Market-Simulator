@@ -25,7 +25,12 @@ public class StockFinder {
     //GENERATE STOCK INFO (price, name, etc.)
     public void stockInfo(String ticker, Portfolio portfolio) throws Exception {
 
-        StockDetails[] stockDetails = getQuote(ticker);
+        StockDetails[] stockDetails = getQuote(ticker); //put the quote into stockDetails
+
+        if (stockDetails == null || stockDetails.length == 0) { //if there is an invalid stock input, return to main menu
+            System.out.println("Invalid stock input. Returning to main menu.\n");
+            return;
+        }
 
         //getting information on the stock
         for ( ; ; ){
@@ -112,8 +117,12 @@ public class StockFinder {
 
         String stockResponse; //store the API response as a String variable
 
-        //send out the request using okhttp - requires an exception if invalid
+        //send out the request using okhttp
         try (Response response = OkHttpUtil.client.newCall(request).execute()) {
+            if (!response.isSuccessful() || response.body() == null) { //if the stock input is invalid, make it null
+                return null;
+            }
+            
             System.out.println(response);
             
             //extract the body from the API response and convert the body into a String
@@ -122,6 +131,10 @@ public class StockFinder {
 
         //use Gson to extract data from JSON
         StockDetails[] stockDetails = gson.fromJson(stockResponse, StockDetails[].class);
+
+        if (stockDetails == null || stockDetails.length == 0) { //if the return is null or empty due to an invalid stock input
+            return null;
+        }
 
         return stockDetails;
     }
