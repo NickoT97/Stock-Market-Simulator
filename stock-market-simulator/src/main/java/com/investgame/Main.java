@@ -19,16 +19,29 @@ public class Main {
         Data data = new Data();
 
         //CHECK IF THERE IS SAVED DATA AVAILABLE
-        if (data.hasSavedData()) {
-            System.out.println("\nSaved data found! Loading previous game..."); //state saved data is found
-            data.loadData(portfolio); //load the data
-            System.out.println("Game loaded successfully. Cash balance: " + portfolio.getBalance());
-        } else {
-            System.out.println("\nNo saved data found. Starting a new game..."); //state no saved data is found
-            System.out.println("\nPlease enter starting cash balance: ");
-            double num = scan.nextDouble();
-            scan.nextLine();
-            portfolio.introCash(num); //add cash
+        for (;;){
+            if (data.hasSavedData()) {
+                System.out.println("\nSaved data found! Loading previous game..."); //state saved data is found
+                data.loadData(portfolio); //load the data
+                System.out.println("Game loaded successfully. Cash balance: " + portfolio.getBalance());
+                break;
+            } else {
+                System.out.println("\nNo saved data found. Starting a new game..."); //state no saved data is found
+                System.out.println("\nPlease enter starting cash balance: ");
+                double num;
+
+                if (scan.hasNextDouble()) { //gives true/false depending if the input is a double or not
+                    num = scan.nextDouble(); //input gets assigned to num
+                    scan.nextLine(); //consume newline
+                    portfolio.introCash(num); //add cash
+                    break;
+                } else {
+                    String invalidInput = scan.nextLine(); //place the input into invalidInput so the code does not crash
+                    System.out.println("Invalid input: '" + invalidInput + "'. Please enter a number >= 0.");
+                    continue;
+                }
+                
+            }
         }
 
         //enter API key

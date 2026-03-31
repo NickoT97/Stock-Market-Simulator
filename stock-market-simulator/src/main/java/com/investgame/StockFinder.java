@@ -40,7 +40,17 @@ public class StockFinder {
             "9. year high\n10. year low\n11. market cap\n12. price (avg. 50 days)\n13. price (avg. 200 days)\n14. exchange"+
             "\n15. open price\n16. previous closing price\n17. timestamp\n");
 
-            int num = scan.nextInt();
+            int num;
+
+            if (scan.hasNextInt()) { //gives true/false depending if the input is an integer or not
+                num = scan.nextInt(); //input gets assigned to num
+                scan.nextLine(); //consume newline
+            } else {
+                String invalidInput = scan.next(); //capture the invalid input directly
+                scan.nextLine(); //consume the rest of the line
+                System.out.println("Invalid input: '" + invalidInput + "'. Please enter a number from 1 to 17.");
+                continue;
+            }
             
             switch (num) {
                 case 1: System.out.println("Symbol: " + stockDetails[0].getSymbol());
@@ -82,7 +92,6 @@ public class StockFinder {
             }
 
             //ask user if they want more info, or they want to break out of the loop
-            scan.nextLine(); 
             
             while (true) {
                 System.out.println("\n\nWould you like more information for " + ticker + "? (YES/NO)");
@@ -153,7 +162,24 @@ public class StockFinder {
                 System.out.println("\nCurrent share price of " + ticker + ": " + stock.getPrice()); //current share price
                 System.out.println("Current cash balance: " + portfolio.getBalance()); //current cash balance
                 System.out.println("\nHow many shares would you like to purchase?"); 
-                int shares = scan.nextInt(); //number of shares the user wants
+                int shares; //number of shares the user wants
+
+                if (scan.hasNextInt()) { //gives true/false depending if the input is an integer or not
+                    shares = scan.nextInt(); //input gets assigned to shares
+                    scan.nextLine(); //consume newline
+                } else {
+                    String invalidInput = scan.next(); //capture the invalid input directly
+                    scan.nextLine(); //consume the rest of the line
+                    System.out.println("Invalid input: '" + invalidInput + "'. Restarting process. Please enter a number >= 0.");
+                    continue;
+                }
+
+
+                if (shares <= 0){
+                    System.out.println("Invalid amount of shares. Returning to main menu.");
+                    return;
+                }
+
                 double sharePrice = stock.getPrice();
                 double totalOrder = shares * sharePrice; //total value of purchase 
 
@@ -230,7 +256,23 @@ public class StockFinder {
                     System.out.println("\nCurrent market price price of " + userInput + ": $" + stock.getCurrentPrice()); //show user the current market share price
 
                     System.out.println("\nHow many shares would you like to sell of " + userInput + "?"); //ask user for how many shares they'd like to sell
-                    int sellShares = scan.nextInt(); //get amount
+                    int sellShares; //get amount of shares to sell
+
+                    if (scan.hasNextInt()) { //gives true/false depending if the input is an integer or not
+                        sellShares = scan.nextInt(); //input gets assigned to sellShares
+                        scan.nextLine(); //consume newline
+                    } else {
+                        String invalidInput = scan.next(); //capture the invalid input directly
+                        scan.nextLine(); //consume the rest of the line
+                        System.out.println("Invalid input: '" + invalidInput + "'. Please enter a number >= 0.");
+                        continue;
+                    }
+
+                    if (sellShares <= 0){
+                        System.out.println("Invalid amount of shares. Try again.");
+                        continue;
+                    }
+
                     double saleTotal = sellShares * stock.getCurrentPrice(); //total sell order
 
                     if (sellShares > stock.getNumSharesOwned()) { //user is not able to sell stock
@@ -288,12 +330,12 @@ public class StockFinder {
                 stock.updateCurrentPrice(newPrice); //set the new price for the one in holdings
 
                 System.out.println("\n" + stock.getName() + " - " + stock.getSymbol()); //state name and symbol
-                System.out.println("Current price: " + stock.getCurrentPrice()); //state current price
-                System.out.println("Average purchase price: " + stock.getAvgSharePrice()); //state avg purchase price
+                System.out.printf("Current price: $%.2f%n", stock.getCurrentPrice()); //state current price
+                System.out.printf("Average purchase price: $%.2f%n", stock.getAvgSharePrice()); //state avg purchase price
 
                 double intProfitOrLoss = (stock.getCurrentPrice() - stock.getAvgSharePrice()) * stock.getNumSharesOwned();
 
-                System.out.println("Unrealized net gain/loss: $" + (Math.round(intProfitOrLoss * 100)) / 100); //state unrealized net gain/loss
+                System.out.printf("Unrealized net gain/loss: $%.2f%n", intProfitOrLoss); //state unrealized net gain/loss
 
                 System.out.println("\n----------------------------------------------"); //separate stocks
 

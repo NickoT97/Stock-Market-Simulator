@@ -20,7 +20,7 @@ public class Portfolio {
         return cashBalance;
     }
 
-    //set cash balance from data sabed
+    //set cash balance from data saved
     public void setBalance(double cash){
         this.cashBalance = cash;
     }
