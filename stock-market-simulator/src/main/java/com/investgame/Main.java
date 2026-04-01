@@ -69,8 +69,17 @@ Choices for while true loop:
             
             System.out.println("\nWhat would you like to do? Please type out one of the following numbers (ex. 2): ");
             System.out.println("1. Portfolio cash balance\n2. Portfolio holdings\n3. Sell a stock\n4. Allowable stocks to invest in\n5. Stock info (including purchase of a stock)\n6. Quit program and save data\n7. Delete saved data and quit program");
-            int response = scan.nextInt();
-            scan.nextLine();
+            int response; //declare user's response
+
+            if (scan.hasNextInt()) { //gives true/false depending if the input is an integer or not
+                response = scan.nextInt(); //input gets assigned to response
+                scan.nextLine(); //consume newline
+            } else {
+                String invalidInput = scan.next(); //capture the invalid input directly
+                scan.nextLine(); //consume the rest of the line
+                System.out.println("\nInvalid input: '" + invalidInput + "'. Please enter a number from 1 to 7.\n");
+                continue;
+            }
 
             switch (response) {
                 case 1: //portfolio cash balance
