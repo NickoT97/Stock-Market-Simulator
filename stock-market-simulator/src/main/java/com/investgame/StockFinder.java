@@ -176,8 +176,8 @@ public class StockFinder {
 
 
                 if (shares <= 0){
-                    System.out.println("Invalid amount of shares. Returning to main menu.");
-                    return;
+                    System.out.println("Invalid amount of shares. Restarting process.");
+                    continue;
                 }
 
                 double sharePrice = stock.getPrice();
@@ -319,6 +319,9 @@ public class StockFinder {
         }
         
         else{ //at least one stock is owned
+            
+            double totalProfitorLoss = 0;
+            
             for (int i = 0; i < portfolio.Holdings.size(); i++){ //iterate through portfolio
                 StockDetails stock = portfolio.Holdings.get(i); //stock in portfolio
                 String stockName = stock.getSymbol(); //stock symbol in portfolio
@@ -339,7 +342,14 @@ public class StockFinder {
 
                 System.out.println("\n----------------------------------------------"); //separate stocks
 
+                totalProfitorLoss += intProfitOrLoss;
+
             }
+
+            System.out.printf("\nTotal Portfolio net gain/loss: $%.2f%n", totalProfitorLoss); //state total portfolio profits/losses
+
+            System.out.println("\n----------------------------------------------"); //separate stocks
+
         }
     }
     
