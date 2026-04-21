@@ -334,6 +334,7 @@ public class StockFinder {
 
                 System.out.println("\n" + stock.getName() + " - " + stock.getSymbol()); //state name and symbol
                 System.out.printf("Current price: $%.2f%n", stock.getCurrentPrice()); //state current price
+                System.out.println("Shares Owned: " + stock.getNumSharesOwned()); //state current price
                 System.out.printf("Average purchase price: $%.2f%n", stock.getAvgSharePrice()); //state avg purchase price
 
                 double intProfitOrLoss = (stock.getCurrentPrice() - stock.getAvgSharePrice()) * stock.getNumSharesOwned();
