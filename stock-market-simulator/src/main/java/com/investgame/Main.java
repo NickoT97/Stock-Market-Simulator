@@ -33,8 +33,15 @@ public class Main {
                 if (scan.hasNextDouble()) { //gives true/false depending if the input is a double or not
                     num = scan.nextDouble(); //input gets assigned to num
                     scan.nextLine(); //consume newline
+
+                    if (num < 0) { //if the user inputs a value less than zero
+                        System.out.println("Invalid input: '" + num + "'. Please enter a number >= 0.");
+                        continue;
+                    }
+
                     portfolio.introCash(num); //add cash
                     break;
+                    
                 } else {
                     String invalidInput = scan.nextLine(); //place the input into invalidInput so the code does not crash
                     System.out.println("Invalid input: '" + invalidInput + "'. Please enter a number >= 0.");
